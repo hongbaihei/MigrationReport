@@ -31,6 +31,9 @@ public class RowReader implements IRowReader {
 				if (curFileName.contains("table2"))// table2
 					mensqldao.addBatch("mem.insert_derive2", data);
 			}
+			else if (rowlist.size() == 4) {
+				//TODO
+			}
 		}
 
 	}
