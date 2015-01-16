@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+
+ 	<context:annotation-config />
+ 
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="dataSource_memDB" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${database.mem.driverClass}" />
+		<property name="jdbcUrl" value="${database.mem.jdbcUrl}" />
+		<property name="user" value="${database.mem.user}" />
+		<property name="password" value="${database.mem.password}" />
+		<property name="minPoolSize" value="10" />
+		<property name="maxPoolSize" value="100" />
+	</bean>
+	<bean id="jdbcTemplate_memDB" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource_memDB" />
+	</bean>
+	<bean id="memDBSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource_memDB" />
+		<property name="configLocation" value="classpath:sql-map-config-mem.xml" />
+	</bean>
+	
+	<bean id="mensqldao" class="com.cib.db.BaseIbatisDao">
+		<constructor-arg index="0" ref="memDBSessionFactory" />
+	</bean>
+	
+	<jdbc:initialize-database data-source="dataSource_memDB" ignore-failures="NONE">
+		<jdbc:script location="classpath:sql/schema.sql" />
+	</jdbc:initialize-database>
+
+</beans>

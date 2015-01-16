@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="mem">
+
+	<insert id="insert_derive1" parameterType="map">
+     <![CDATA[
+    	insert into LAST_CORE_INFO  
+    	(SK_DATE , IDENTITY_NUM ,LEVEL ,UPDATE_NO ,UPDATE_BY ,UPDATE_ORG ,UPDATE_SUB ) 
+    	values
+    	(#{SK_DATE},#{IDENTITY_NUM},#{LEVEL},#{UPDATE_NO},#{UPDATE_BY},#{UPDATE_ORG},#{UPDATE_SUB})
+    ]]>
+     </insert>
+     
+     <insert id="insert_derive2" parameterType="map">
+     <![CDATA[
+    	insert into CUR_CORE_INFO  
+    	(SK_DATE , IDENTITY_NUM ,LEVEL ,UPDATE_NO ,UPDATE_BY ,UPDATE_ORG ,UPDATE_SUB ) 
+    	values
+    	(#{SK_DATE},#{IDENTITY_NUM},#{LEVEL},#{UPDATE_NO},#{UPDATE_BY},#{UPDATE_ORG},#{UPDATE_SUB})
+    ]]>
+     </insert>
+     
+     <select id="query_derive1" parameterType="map" resultType="map">
+		<![CDATA[
+			SELECT * from LAST_CORE_INFO
+		]]>
+	</select>
+	
+	 <select id="query_derive2" parameterType="map" resultType="map">
+		<![CDATA[
+			SELECT * from CUR_CORE_INFO
+		]]>
+	</select>
+	
+</mapper>
